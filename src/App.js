@@ -19,7 +19,9 @@ const App = () => {
       setSchedule(addScheduleTimes(json));
     }
     fetchSchedule();
-  }, [])
+  }, []);
+
+  if (!schedule) return <h1>Loading schedule...</h1>;
 
   return (
     <div className="container">
@@ -28,6 +30,7 @@ const App = () => {
     </div>
   );
 };
+
 
 const Banner = ({ title }) => (
   <h1>{ title }</h1>
