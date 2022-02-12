@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider, onIdTokenChanged, signInWithPopup, signOut } from 'firebase/auth';
 import { useState, useEffect } from 'react';
 import { getDatabase, onValue, ref, set } from 'firebase/database';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -17,6 +18,20 @@ const firebaseConfig = {
     messagingSenderId: "358930484687",
     appId: "1:358930484687:web:65d215a00072aa2dfc56ba",
     measurementId: "G-2HL9BDZGNG"
+};
+
+export const signInWithGoogle = () => {
+  signInWithPopup(getAuth(firebase), new GoogleAuthProvider());
+};
+
+export const useUserState = () => {
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    onIdTokenChanged(getAuth(firebase), setUser);
+  }, []);
+
+  return [user];
 };
 
 
@@ -52,3 +67,6 @@ export const setData = (path, value) => (
 // Initialize Firebase
 const firebase = initializeApp(firebaseConfig);
 const database = getDatabase(firebase);
+const firebaseSignOut = () => signOut(getAuth(firebase));
+
+export { firebaseSignOut as signOut };
